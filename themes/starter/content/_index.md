@@ -8,6 +8,6 @@ This demo shows how to use Hugo’s [Content Adapters](https://gohugo.io/content
 
 The site is built on top of Hugo’s default starter theme, which you can generate in any Hugo project by running `hugo new theme [theme-name]` from the root directory.
 
-To understand how to work with this project, make sure you read [README.md](/).
+To understand how to work with this project, make sure you read [README.md](https://github.com/harrycresswell/hugo-content-adapters/blob/main/README.md).
 
 The pages you see below are a mix of posts generated from local markdown files and dynamic remote data sources.
