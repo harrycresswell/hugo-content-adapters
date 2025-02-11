@@ -1,0 +1,4 @@
+node_modules/
+public/
+site/public
+.vscode/*

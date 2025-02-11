@@ -1,0 +1,69 @@
+{{/* Get remote data. */}}
+
+{{ $data := dict }}
+{{ $url := "https://docs.google.com/spreadsheets/d/e/2PACX-1vTdSubfXxQx6-2Lqiforf1ySbEloD4arxbPkSAA8TWifYRwq9xMQda4G63kaV_JKpgxBFW-VIpR7Ugu/pub?gid=0&single=true&output=csv" }}
+
+{{/* Create a seed and random URL to bust cache set by Google Sheets. See https://www.youtube.com/watch?v=_PlDMok-yUg for more on this */}}
+
+{{ $seed := now.Unix }}
+{{ $randUrl := (printf "&rando=%s" (printf "%.10s" (sha256 $seed)) | printf "%s%s" $url | printf "%s") }}
+
+{{ with resources.GetRemote $randUrl }}
+  {{ with .Err }}
+    {{ errorf "Unable to get remote resource %s: %s" $url . }}
+  {{ else }}
+    {{ $data = . | transform.Unmarshal  }}
+  {{ end }}
+{{ else }}
+  {{ errorf "Unable to get remote resource %s" $url }}
+{{ end }}
+
+{{/* Add pages and page resources. */}}
+
+{{ range after 1 $data }}
+
+  {{ $title := index . 0 }}
+  {{ $slug := index . 1 }}
+  {{ $body := index . 2 }}
+  {{ $keyword := index . 3 }}
+  {{ $city := index . 4 }}
+  {{ $state := index . 5 }}
+  {{ $publish := index . 6 }}
+  {{ $imageUrl := index . 7 }}
+  {{ $imageAlt := index . 8 }}
+
+  {{/* Add page. */}}
+
+  {{ $content := dict "mediaType" "text/markdown" "value" $body }}
+  {{ $params := dict "title" $title "keyword" $keyword "city" $city "state" $state "imageUrl" $imageUrl "imageAlt" $imageAlt "publish" $publish }}
+
+  {{ $page := dict
+    "content" $content
+    "kind" "page"
+    "params" $params
+    "path" $slug
+    "title" $title
+  }}
+
+  {{ if eq $publish "yes" }}
+    {{ $.AddPage $page }}
+  {{ end }}
+ 
+  {{/* Add page resource. */}}
+
+  {{ with resources.GetRemote $imageUrl }}
+    {{ $content := dict
+      "mediaType" .MediaType.Type
+      "value" .Content
+    }}
+    {{ $params := dict "alt" $imageAlt }}
+    {{ $resource := dict
+      "content" $content
+      "params" $params
+      "path" (printf "%s/cover.%s" $slug .MediaType.SubType)
+    }}
+    {{ $.AddResource $resource }}  
+  {{ end }}
+
+{{ end }}
+

@@ -1,0 +1,34 @@
+{{ define "main" }}
+
+  {{ $title := .Title }}
+	{{ $content := .Content }}
+  {{ $keyword := .Params.keyword }}
+  {{ $city := .Params.city }}
+  {{ $state := .Params.state }}
+  {{ $imageUrl := .Params.imageurl }}
+  {{ $imageAlt := .Params.imagealt }}
+
+  {{ with $title }}<h1>{{ . }}</h1>{{ end }}
+
+  {{ "<!-- Image as static asset -->" | safeHTML }}
+  <img src="{{ .Params.imageUrl }}" alt="{{ .Params.imageAlt }}">
+
+  {{ "<!-- Image as a Page resource -->" | safeHTML }}
+  {{ with .Resources.GetMatch "cover.*" }}
+    <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Params.alt }}">
+  {{ end }}
+
+  {{/*  <pre>{{ debug.Dump . }}</pre>  */}}
+  {{/*  <pre>{{ debug.Dump .Params }}</pre>  */}}
+
+  <ul>
+    <li><strong>City</strong>: {{ $city }}</li>
+    <li><strong>State</strong>: {{ $state }}</li>
+    <li><strong>Keyword</strong>: {{ $keyword }}</li>
+    <li><strong>Image URL</strong>: {{ $imageUrl }}</li>
+    <li><strong>Image Alt</strong>: {{ $imageAlt }}</li>
+  </ul>
+
+  {{ with $content }}<div>{{ . }}</div>{{ end }}
+
+{{ end }}
