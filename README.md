@@ -13,7 +13,6 @@ Clone this repository:
 
 ```
 git clone https://github.com/harrycresswell/content-adapters.git
-
 ```
 
 ## Local development
@@ -28,7 +27,7 @@ hugo server
 
 Head to `content/books/_content.gotmpl` to find [Hugo’s content adapter example](https://gohugo.io/content-management/content-adapters/#example) as seen in the Hugo docs. This example takes remote JSON data and creates pages for a collection of books. You can see these books by navigating to /books in a browser.
 
-Head to `content/locations/_content.gotmpl` to find a content adapter template used to generate pages from Google Sheets data, as explained in [dynamically generate pages from Google Sheets using Hugo’s Content Adapters](/). I recommend reading this post to get a better understanding of what this content adapter is doing and how it generates pages.
+Head to `content/locations/_content.gotmpl` to find a content adapter template used to generate pages from Google Sheets data, as explained in [ Generate pages from Google Sheets using Hugo’s Content Adapters](https://harrycresswell.com/writing/generate-pages-from-google-sheets). I recommend reading this post to get a better understanding of what this content adapter is doing and how it generates pages.
 
 `themes/starter/layouts/locations/single.html` is the layout template used to display the content on the generated pages.
 
