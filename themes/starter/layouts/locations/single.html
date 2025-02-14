@@ -14,8 +14,10 @@
   <img src="{{ .Params.imageUrl }}" alt="{{ .Params.imageAlt }}">
 
   {{ "<!-- Image as a Page resource -->" | safeHTML }}
-  {{ with .Resources.GetMatch "cover.*" }}
-    <img src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}" alt="{{ .Params.alt }}">
+  {{ $resourceImage := .Resources.GetMatch "cover.*" }}
+  {{ with $resourceImage }}
+    {{ $image := $resourceImage.Process "crop 600x400" }}
+    <img src="{{ $image.RelPermalink }}" width="{{ $image.Width }}" height="{{ $image.Height }}" alt="{{ $image.Params.alt }}">
   {{ end }}
 
   {{/*  <pre>{{ debug.Dump . }}</pre>  */}}
